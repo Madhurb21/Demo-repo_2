@@ -31,12 +31,21 @@ for(i in 1:length(temp))
 #####################################################################################
 
 temp_votes <- html %>% html_elements(".ratingColumn strong") %>% html_attrs()
-temp_votes_num <- matrix(0 ,nrow = 250, ncol = 1)
+temp_votes_without_comma <- matrix(0 ,nrow = 250, ncol = 1)
 
 for(i in 1:250)
 {
-  temp_votes_num[i] <- gsub(temp_votes[i], ",","", temp_votes_num[i])
+  temp_votes_without_comma[i] <- gsub(",","", temp_votes[i])
+  temp_votes_without_comma[i] <- gsub(" user ratings","", temp_votes_without_comma[i])
 }
 
+temp_votes_num <- numeric(length = 250)
+temp_votes_num <- as.numeric(substr(temp_votes_without_comma, start = 14, stop = 10000))
+
 list <- matrix(0, nrow = length(names), ncol = 4)
+
+list[ ,1] = names
+list[ ,2] = rating
+list[ ,3] = dates
+list[ ,4] = temp_votes_num
 
